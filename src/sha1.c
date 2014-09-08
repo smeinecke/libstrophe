@@ -274,7 +274,15 @@ void SHA1_Final(SHA1_CTX* context, uint8_t digest[SHA1_DIGEST_SIZE])
     SHA1_Transform(context->state, context->buffer);
 #endif
 }
-  
+
+void SHA1(const uint8_t* data, size_t len, uint8_t digest[SHA1_DIGEST_SIZE])
+{
+    SHA1_CTX ctx;
+    SHA1_Init(&ctx);
+    SHA1_Update(&ctx, data, len);
+    SHA1_Final(&ctx, digest);
+}
+
 /*************************************************************/
 
 #if 0
