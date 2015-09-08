@@ -838,3 +838,36 @@ static void _handle_stream_stanza(xmpp_stanza_t *stanza,
 
     handler_fire_stanza(conn, stanza);
 }
+
+/** Send a single text message.
+ *  This function sends a simple text message to a given recipient.
+ *
+ *  @param conn a Strophe connection object
+ *  @param to the JID of the recipient
+ *  @param message the text of the message to send
+ *
+ *  @ingroup Connections
+ */
+void xmpp_send_simple_message(xmpp_conn_t *conn,
+      const char * const to,
+      const char * const message)
+{
+   xmpp_stanza_t *msg, *body, *text;
+   xmpp_ctx_t *ctx = xmpp_conn_get_context(conn);
+
+   msg = xmpp_stanza_new(ctx);
+   xmpp_stanza_set_name(msg, "message");
+   xmpp_stanza_set_type(msg, "chat");
+   xmpp_stanza_set_attribute(msg, "to", to);
+
+   body = xmpp_stanza_new(ctx);
+   xmpp_stanza_set_name(body, "body");
+
+   text = xmpp_stanza_new(ctx);
+   xmpp_stanza_set_text(text, message);
+   xmpp_stanza_add_child(body, text);
+   xmpp_stanza_add_child(msg, body);
+
+   xmpp_send(conn, msg);
+   xmpp_stanza_release(msg);
+}

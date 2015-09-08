@@ -236,6 +236,11 @@ void xmpp_send_raw_string(xmpp_conn_t * const conn,
 void xmpp_send_raw(xmpp_conn_t * const conn, 
 		   const char * const data, const size_t len);
 
+void xmpp_send_simple_message(xmpp_conn_t *conn,
+			      const char * const to,
+			      const char * const message);
+
+
 
 /* handlers */
 
